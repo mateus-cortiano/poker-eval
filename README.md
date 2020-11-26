@@ -1,12 +1,12 @@
 # poker-eval
 a simple python poker hand evaluator
 
-- hand_evaluator.py
+- hand_evaluator.py:
   this is the base of the project.
   it takes one to nine lists of hands that represents the players in the format [[face, suit], ...]
 then returns an ordered ranking of every hand, even in the case of draws.
 
-- equity_calculator.py
+- equity_calculator.py:
   this is used to calculate the equity of two Texas Hold'em hands.
   it can receive just the pair of hands as well as some board cards (flop, turn or river).
   we have two functions in this one, GetEquity() and GetEquityVsRange().
