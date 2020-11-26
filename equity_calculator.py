@@ -15,7 +15,7 @@ def GetEquity(iter, *hands, board=[]):
 
         :*hands: Hands in the format [[13, "s"], ...]
 
-        :board: You need want some part of the board
+        :board: You may want some part of the board
                 already dealt
     """
 
@@ -72,15 +72,3 @@ def GetEquityVsRange(iter, hero, range, board=[]):
             else:
                 final_equity = equity[0]
     return final_equity
-
-range_bb = HoldemRange(1)
-
-
-# hands = []
-# hands.insert(0, [[10, 'c'], [9, 'd']])            
-# hands.insert(1, [[13, 'c'], [12, 's']])
-# hands.insert(2, [[13, 'd'], [12, 'h']])
-
-board = []
-
-print(GetEquityVsRange(10, [[10, 'd'], [9, 'd']], range_bb))

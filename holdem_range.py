@@ -40,7 +40,3 @@ class HoldemRange(list):
         """ Dumps the range to a file """
         with open(file, "w") as f:
             f.write("\n".join(["{0}: {1}".format(k, f) for [k, f] in self.combos]))
-
-
-rng = HoldemRange(0.5)
-pass

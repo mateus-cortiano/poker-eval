@@ -23,25 +23,32 @@ class evaluate_hands():
     """ 
 
     def __init__(self, *hands, array=""):
+
         # Creating key value pair for player:hand
+
         ranking = []
         if array:
-            self.players = array[:]
+            self.players = [(player, hand) for player, hand in enumerate(array)]
         else:
-            self.players = [(hands.index(arg), sorted(arg)) for arg in hands]
+            self.players = [sorted(arg) for arg in hands]
 
         # Evaluating every player hand and returning its absolute rank
-        for (player, hand) in self.players:
+
+        for player, hand in enumerate(self.players):
+
             rank = [1] + [i[0] for i in sorted(hand, reverse=True)][0:5]
 
             # Pairs +
+
             pairs = self.eval_pairs(hand)
             if pairs:
                 rank = pairs
             
             # Straights and Flushes
+
             flush = self.eval_flush(hand)
             straight = self.eval_straight(hand)
+
             if straight:
                 if flush:
                     rank = [9, straight]
@@ -51,10 +58,13 @@ class evaluate_hands():
                     rank = [6] + flush
 
             # Final hand rank
+
             ranking.append([rank, player])
         
         # Final ranking
+
         ranking.sort(reverse=True)
+
         if ranking[0][0] == ranking [1][0]:
             ranking[0].insert(0, 1)
             for n in range(1, len(ranking)):
@@ -68,14 +78,16 @@ class evaluate_hands():
             for n in range(1, len(ranking)):
                 ranking[n].insert(0, 0)
             
-            
         self.m_carlo = [(x[2], x[0]) for x in ranking]
 
 
     def eval_flush(self, hand):
+
         """ Evaluates flushes """
+
         cnt = Counter(x for list in hand for x in list[1])
         vset = list(cnt.values())
+
         if any(i >= 5 for i in vset):
             return [i[0] for i in sorted(hand, reverse=True) if i[1] == [k for k in cnt if cnt[k] > 4][0]][0:5]
         else:
@@ -83,7 +95,9 @@ class evaluate_hands():
 
 
     def eval_straight(self, hand):
+
         """ Evaluates straights """
+
         vset = sorted([i[0] for i in hand])
         if max([len(set(vset).intersection(set(s))) for s in STRAIGHTS]) >= 5:
             return [max(i) for i in [set(vset).intersection(set(s))\
@@ -93,16 +107,21 @@ class evaluate_hands():
 
 
     def eval_pairs(self, hand):
+
         """ Evaluates if there's and how much pairs, trips and quads """
+
         vset = Counter([i[0] for i in hand])
         if any(i > 1 for i in vset.values()):
+
             quads = {k:v for (k, v) in vset.items() if v > 3}
             if quads:
                 v1 = max(list(quads.keys()))
                 vset.pop(v1)
                 return [8, v1, sorted(list(vset.keys()), reverse=True)]
+
             pairs = {k:v for (k, v) in vset.items() if 1 < v < 3}
             trips = {k:v for (k, v) in vset.items() if 2 < v < 4}
+
             if trips:
                 if pairs:
                     v1 = max(list(trips.keys()))
@@ -114,6 +133,7 @@ class evaluate_hands():
                     v1 = max(list(trips.keys()))
                     vset.pop(v1)
                     return [4, v1] + sorted(list(vset.keys()), reverse=True)[0:2]
+
             if pairs:
                 if len(pairs) > 1:
                     v1 = max(list(pairs.keys()))
@@ -127,11 +147,5 @@ class evaluate_hands():
                     pairs.pop(v1)
                     vset.pop(v1)
                     return [2, v1] + sorted(list(vset.keys()), reverse=True)[0:3]
+
         return False
-
-
-# h1 = [[9, 'c'], [9, 'd'], [6, 's'], [2, 'd'], [5, 's']]
-# h2 = [[13, 'h'], [12, 's'], [6, 's'], [2, 'd'], [5, 's']]
-# eval = evaluate_hands(h1, h2)
-# print(eval.m_carlo)
-# pass
