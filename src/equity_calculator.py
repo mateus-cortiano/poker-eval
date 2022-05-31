@@ -1,12 +1,12 @@
-"""=== EQUITY CALCULATOR ==="""
+""" equity_calculator.py """
 
 from hand_evaluator import evaluate_hands
-from holdem_range import HoldemRange
 from random import shuffle
+
+# ---
 
 
 def GetEquity(iter, *hands, board=[]):
-
     """
     Returns the equity for two or more players
 
@@ -20,12 +20,12 @@ def GetEquity(iter, *hands, board=[]):
     """
 
     deck = [[x, y] for x in range(13, 0, -1) for y in ["s", "h", "d", "c"]]
-    for card in [x[k] for x in hands for k in range(0,2)]:
+    for card in [x[k] for x in hands for k in range(0, 2)]:
         deck.remove(card)
     for card in board:
         deck.remove(card)
 
-    wins = {i:0 for i in range(len(hands))}
+    wins = {i: 0 for i in range(len(hands))}
 
     for _ in range(0, iter):
         rem_deck = deck[:]
@@ -37,10 +37,10 @@ def GetEquity(iter, *hands, board=[]):
         eval = evaluate_hands(array=player_arr)
         for (player, value) in eval.m_carlo:
             wins[player] += value
-    return {k:round(v*0.5/iter, 4) for (k,v) in wins.items()}
+    return {k: round(v * 0.5 / iter, 4) for (k, v) in wins.items()}
+
 
 def GetEquityVsRange(iter, hero, range, board=[]):
-
     """
     Returns the equity for a given combo vs
     a given range of combos
@@ -52,9 +52,9 @@ def GetEquityVsRange(iter, hero, range, board=[]):
                [[int, suit], [int, suit]]
 
         :range: The range that the hero cards will play
-                against. This argument must be a 
+                against. This argument must be a
                 HoldemRange() dictionary.
-        
+
         :board: You need want some part of the board
                 already dealt
     """
@@ -67,7 +67,7 @@ def GetEquityVsRange(iter, hero, range, board=[]):
             continue
         else:
             equity = GetEquity(iter, hero, vs_hand, board=board)
-            if 'final_equity' in locals():
+            if "final_equity" in locals():
                 final_equity = (final_equity + equity[0]) / 2
             else:
                 final_equity = equity[0]

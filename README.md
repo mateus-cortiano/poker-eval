@@ -1,5 +1,5 @@
 # poker-eval
-a simple python poker hand evaluator
+a python poker hand evaluator
 
 - hand_evaluator.py:
   this is the base of the project.
@@ -20,5 +20,6 @@ in one of the ranges.
 #
 
   I ultimately gave up this project because of performance issues.
+  Since this is my first real python project I'm just leaving it on GitHub for the memories.
   Python is just too slow, and there are other libraries that are already fast and reliable.
-  my goal is to rewrite this in C or C++.
+  My goal is to rewrite this in C or C++.
